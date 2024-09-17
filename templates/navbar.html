@@ -4,10 +4,16 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto">
+              {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'trainers:logout_trainer' %}">Logout</a></li>
+              {% endif %}
               <li class="nav-item"><a class="nav-link" href="{% url 'trainers:trainer_register' %}">Sign Up</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'trainers:trainer_login' %}">Log In</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'home:about' %}">About Us</a></li>
               <li class="nav-item"><a class="nav-link" href="#!">wiki</a></li>
+              {% if user.is_authenticated %}
+                <span class="nav-link fw-bold text-primary bg-secondary text-white">Welcome, {{ user.username }}!</span>
+              {% endif %}
           </ul>
       </div>
   </div>

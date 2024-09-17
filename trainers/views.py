@@ -1,21 +1,20 @@
 from django.shortcuts import render, redirect
-from . forms import TrainerRegisterForm,TrainerLoginForm
+from . forms import TrainerRegisterForm,TrainerLoginForm,CustomPasswordChangeForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.contrib import messages 
-
+from django.http import HttpResponseForbidden
 # Create your views here.
 def TrainerRegister(request):
-    if request.method == 'POST':  # Check request method here
+    if request.method == 'POST': 
         form_register = TrainerRegisterForm(request.POST)
         if form_register.is_valid():
             data = form_register.cleaned_data
             User.objects.create_user(username=data['trainer_name'], email=data['email'], password=data['password_2'])
             return redirect('trainers:register_thanks')
     else:
-        form_register = TrainerRegisterForm()  # Create an empty form for GET requests
+        form_register = TrainerRegisterForm()  
     context = {'form_register': form_register}
     return render(request, 'trainers/trainer_register.html', context=context)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -27,20 +26,49 @@ def TrainerLogin(request):
         form_login = TrainerLoginForm(request.POST)
         if form_login.is_valid():
             data = form_login.cleaned_data
-            user = authenticate(username=data['trainer_name'], password=data['password'])  # Use trainer_name for authentication
+            user = authenticate(username=data['trainer_name'], password=data['password'])  
             if user is not None:
-            # Check if the authenticated user is a trainer (assuming logic)
-                if isinstance(user, User):  # Replace 'Trainer' with your actual model name
+                if isinstance(user, User): 
                     login(request, user)
                     return redirect('trainers:login_thanks')
                 else:
-                    messages.error(request, 'Invalid trainer credentials')  # Specific error message for trainers
+                    messages.error(request, 'Invalid trainer credentials') 
         else:
             messages.error(request, 'Invalid username or password') 
     else:
         form_login = TrainerLoginForm() 
-    context = {'form_login': form_login}# Generic error message
-    return render(request, 'trainers/trainer_login.html')  # Replace 'login.html' with your trainer login template
+    context = {"form_login": form_login}
+    return render(request, 'trainers/trainer_login.html', context=context)  
 #................................................
 def LoginThanks (request):
     return render(request, 'trainers/login_thanks.html')
+#................................................................
+def LogoutTrainer(request):
+    logout(request)
+    return redirect('trainers:trainer_login') 
+#......................................
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(data=request.POST, user=request.user)
+        # ... your POST request handling code ...
+    else:  # Only create form for GET requests
+        form = CustomPasswordChangeForm(user=request.user)
+
+    context = {'form': form}  # Use 'form' for clarity
+    return render(request, 'trainers/password_change.html', context=context)
+def change_password(request):
+    if not request.user.is_authenticated:
+        # Render a custom error message if the user is not logged in
+        return render(request, 'errors/please_login.html', status=403)
+
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            return render(request, 'status/change_suc.html')
+            # Optionally, add logic to redirect or show a success message
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+
+    context = {'form': form}
+    return render(request, 'trainers/password_change.html', context)

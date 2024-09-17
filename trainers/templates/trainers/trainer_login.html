@@ -10,7 +10,7 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+              <h2 class="text-uppercase text-center mb-5">Login</h2>
               <div class="mb-3">
                 <form action="{% url 'trainers:trainer_login' %}" method="post" novalidate>
                     {% csrf_token %}
@@ -19,11 +19,13 @@
 
                     <div class="d-flex justify-content-center">
                     <button  type="submit" data-mdb-button-init
-                        data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                        data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Login</button>
                     </div>
 
-                    <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
-                        class="fw-bold text-body"><u>Login here</u></a></p>
+                    <p class="text-center text-muted mt-5 mb-0">Dont have an account? <a href="{% url 'trainers:trainer_register' %}"
+                        class="fw-bold text-body"><u>Register here</u></a></p>
+                    <p class="text-center text-muted mt-5 mb-0">Need to change you password? <a href="{% url 'trainers:change_password' %}"
+                        class="fw-bold text-body"><u>Change it here</u></a></p>
                 </form>
               </div>
             </div>
