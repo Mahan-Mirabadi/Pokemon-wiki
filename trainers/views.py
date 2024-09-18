@@ -12,14 +12,12 @@ def TrainerRegister(request):
         if form_register.is_valid():
             data = form_register.cleaned_data
             User.objects.create_user(username=data['trainer_name'], email=data['email'], password=data['password_2'])
-            return redirect('trainers:register_thanks')
+            return render(request, 'trainers/register_thanks.html')
     else:
         form_register = TrainerRegisterForm()  
     context = {'form_register': form_register}
     return render(request, 'trainers/trainer_register.html', context=context)
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-def RegisterThanks (request):
-    return render(request, 'trainers/register_thanks.html')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 def TrainerLogin(request):
     if request.method == 'POST':
@@ -30,7 +28,7 @@ def TrainerLogin(request):
             if user is not None:
                 if isinstance(user, User): 
                     login(request, user)
-                    return redirect('trainers:login_thanks')
+                    return render(request, 'trainers/login_thanks.html')
                 else:
                     messages.error(request, 'Invalid trainer credentials') 
         else:
@@ -40,8 +38,6 @@ def TrainerLogin(request):
     context = {"form_login": form_login}
     return render(request, 'trainers/trainer_login.html', context=context)  
 #................................................
-def LoginThanks (request):
-    return render(request, 'trainers/login_thanks.html')
 #................................................................
 def LogoutTrainer(request):
     logout(request)

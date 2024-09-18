@@ -1,6 +1,7 @@
 from django.urls import path
-from wiki import views
-app_name = 'wiki'
-urlpatterns=[
-    
+from . import views
+
+urlpatterns = [
+    path('', views.pokemon_list, name='pokemon_list'),
+    path('pokemon/<str:name>/', views.pokemon_detail, name='pokemon_detail'),
 ]

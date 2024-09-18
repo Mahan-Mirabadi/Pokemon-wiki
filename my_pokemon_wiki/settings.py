@@ -102,6 +102,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',  # In-memory caching
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
 
 
 #added the below line for adding static files (mahan)

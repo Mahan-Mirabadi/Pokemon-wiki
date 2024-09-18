@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pokemon.name | capfirst }} #{{ pokedex_number|stringformat:"04d" }}</title>
+    <link rel="stylesheet" href="{% static 'css/pokemon_detail.css' %}">
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="pokemon-hero">
+        <div class="pokemon-info">
+            <h1>{{ pokemon.name | capfirst }} <span class="pokedex-number">#{{ pokedex_number|stringformat:"04d" }}</span></h1>
+            <img src="{{ sprite_url }}" alt="{{ pokemon.name }} image" class="pokemon-sprite" />
+        </div>
+    </div>
+
+    <!-- Description and Stats -->
+    <div class="details-container">
+        <p><strong>Description:</strong> {{ description }}</p>
+        <p><strong>Height:</strong> {{ height }} meters</p>
+        <p><strong>Weight:</strong> {{ weight }} kilograms</p>
+
+        <!-- Types -->
+        <p><strong>Types:</strong> 
+            {% if types_with_colors %}
+                {% for type_ in types_with_colors %}
+                    <span class="type-badge" style="background-color: {{ type_.color }};">
+                        {{ type_.name | capfirst }}
+                    </span>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                No types available
+            {% endif %}
+        </p>
+
+        <!-- Abilities -->
+        <p><strong>Abilities:</strong> 
+            {% if abilities %}
+                {% for ability in abilities %}
+                    {{ ability | capfirst }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                No abilities available
+            {% endif %}
+        </p>
+
+        <!-- Stats -->
+        <p><strong>Stats:</strong></p>
+        <div class="stats-grid">
+            {% for stat_name, stat_value in stats.items %}
+                <div class="stat-box">
+                    <strong>{{ stat_name | capfirst }}:</strong> {{ stat_value }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Evolution Chain -->
+    <p><strong>Evolution Chain:</strong></p>
+    <div class="evolution-chain">
+        {% for evolution in evolutions %}
+            <div class="evolution-item">
+                <img src="{{ evolution.sprite }}" alt="{{ evolution.name }} sprite" />
+                <p>{{ evolution.name | capfirst }}</p>
+                {% if not forloop.last %}
+                <span class="arrow">→</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Weaknesses -->
+    <p><strong>Weaknesses:</strong> 
+        {% if weaknesses_with_colors %}
+            {% for weakness in weaknesses_with_colors %}
+                <span class="weakness-badge" style="background-color: {{ weakness.color }};">
+                    {{ weakness.name | capfirst }}
+                </span>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        {% else %}
+            No weaknesses available
+        {% endif %}
+    </p>
+
+    <!-- Back to Pokémon List -->
+    <div class="back-to-list">
+        <a href="{% url 'pokemon_list' %}?page={{ request.GET.page }}" class="back-button">Back to Pokémon List</a>
+    </div>
+</body>
+</html>
