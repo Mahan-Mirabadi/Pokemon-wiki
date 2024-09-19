@@ -41,14 +41,14 @@ def LogoutTrainer(request):
     logout(request)
     return redirect('trainers:trainer_login') 
 #......................................
-def change_password(request):
-    if request.method == 'POST':
-        form = CustomPasswordChangeForm(data=request.POST, user=request.user)
-    else:
-        form = CustomPasswordChangeForm(user=request.user)
+# def change_password(request):
+#     if request.method == 'POST':
+#         form = CustomPasswordChangeForm(data=request.POST, user=request.user)
+#     else:
+#         form = CustomPasswordChangeForm(user=request.user)
 
-    context = {'form': form}  
-    return render(request, 'trainers/password_change.html', context=context)
+#     context = {'form': form}  
+#     return render(request, 'trainers/password_change.html', context=context)
 def change_password(request):
     if not request.user.is_authenticated:
         return render(request, 'errors/please_login.html', status=403)
