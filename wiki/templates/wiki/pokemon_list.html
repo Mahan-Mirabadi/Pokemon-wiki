@@ -1,37 +1,60 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
+{% block content %}
+<div class="pokemon-page">
 <head>
-    <title>Pokémon List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/pokemon_list.css' %}">
+    <style>
+        body {
+            background: url('{% static 'assets/img/pokemon1.jpg' %}') no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body>
-    <h1>Pokémon List</h1>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% else %}
-        <ul>
-            {% for pokemon in page_obj %}
-                <li><a href="{% url 'pokemon_detail' pokemon.name %}">{{ pokemon.name | capfirst }}</a></li>
-            {% endfor %}
-        </ul>
+    <div class="container">
+        <h1>Pokémon Wiki</h1>
+        
+        <!-- Search Form -->
+        <form method="get" action="{% url 'pokemon_list' %}" class="search-form">
+            <input type="text" name="query" placeholder="Search for Pokémon..." value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+        
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% else %}
+            <ul class="pokemon-list">
+                {% for pokemon in page_obj %}
+                    <li class="pokemon-item">
+                        <a href="{% url 'pokemon_detail' pokemon.name %}">
+                            {{ pokemon.name | capfirst }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
 
-        <div>
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1{% if query %}&query={{ query }}{% endif %}">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&query={{ query }}{% endif %}">previous</a>
+                    {% endif %}
 
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if query %}&query={{ query }}{% endif %}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&query={{ query }}{% endif %}">last &raquo;</a>
+                    {% endif %}
                 </span>
-
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
+            </div>
+        {% endif %}
+    </div>
 </body>
-</html>
+</div>
+{% endblock %}

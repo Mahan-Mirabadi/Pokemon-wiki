@@ -1,6 +1,8 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+<div class="pokemon-page">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +13,7 @@
     <!-- Hero Section -->
     <div class="pokemon-hero">
         <div class="pokemon-info">
-            <h1>{{ pokemon.name | capfirst }} <span class="pokedex-number">#{{ pokedex_number|stringformat:"04d" }}</span></h1>
+            <h1>{{ pokemon.name | capfirst }} <span class="pokedex-number">{{ pokedex_number }}</span></h1>
             <img src="{{ sprite_url }}" alt="{{ pokemon.name }} image" class="pokemon-sprite" />
         </div>
     </div>
@@ -64,10 +66,10 @@
             <div class="evolution-item">
                 <img src="{{ evolution.sprite }}" alt="{{ evolution.name }} sprite" />
                 <p>{{ evolution.name | capfirst }}</p>
-                {% if not forloop.last %}
-                <span class="arrow">→</span>
-                {% endif %}
             </div>
+            {% if not forloop.last %}
+                <span class="arrow">→</span> <!-- Add arrows between each evolution -->
+            {% endif %}
         {% endfor %}
     </div>
 
@@ -89,4 +91,5 @@
         <a href="{% url 'pokemon_list' %}?page={{ request.GET.page }}" class="back-button">Back to Pokémon List</a>
     </div>
 </body>
+</div>
 </html>

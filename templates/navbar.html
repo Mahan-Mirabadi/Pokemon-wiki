@@ -12,7 +12,7 @@
               <li class="nav-item"><a class="nav-link" href="{% url 'trainers:trainer_login' %}">Log In</a></li>
               {% endif %}
               <li class="nav-item"><a class="nav-link" href="{% url 'home:about' %}">About Us</a></li>
-              <li class="nav-item"><a class="nav-link" href="#.">Wiki</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'pokemon_list' %}">Wiki</a></li>
               {% if user.is_authenticated %}
                 <span class="nav-link fw-bold text-primary bg-secondary text-white">Welcome, {{ user.username }}!</span>
               {% endif %}

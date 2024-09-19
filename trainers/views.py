@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 from . forms import TrainerRegisterForm,TrainerLoginForm,CustomPasswordChangeForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages 
-from django.http import HttpResponseForbidden
 # Create your views here.
 def TrainerRegister(request):
     if request.method == 'POST': 
@@ -46,15 +44,13 @@ def LogoutTrainer(request):
 def change_password(request):
     if request.method == 'POST':
         form = CustomPasswordChangeForm(data=request.POST, user=request.user)
-        # ... your POST request handling code ...
-    else:  # Only create form for GET requests
+    else:
         form = CustomPasswordChangeForm(user=request.user)
 
-    context = {'form': form}  # Use 'form' for clarity
+    context = {'form': form}  
     return render(request, 'trainers/password_change.html', context=context)
 def change_password(request):
     if not request.user.is_authenticated:
-        # Render a custom error message if the user is not logged in
         return render(request, 'errors/please_login.html', status=403)
 
     if request.method == 'POST':
@@ -62,7 +58,6 @@ def change_password(request):
         if form.is_valid():
             form.save()
             return render(request, 'status/change_suc.html')
-            # Optionally, add logic to redirect or show a success message
     else:
         form = CustomPasswordChangeForm(user=request.user)
 

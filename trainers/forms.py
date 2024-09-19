@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import PasswordChangeForm  # Assuming trainers.views.py is one level above trainers.forms.py
-
+from django.contrib.auth.forms import PasswordChangeForm  
 class TrainerRegisterForm(forms.Form):
     trainer_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class': 'form-control form-control-lg', 'id': 'form3Example3cg'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control form-control-lg', 'id': 'form3Example3cg'}))

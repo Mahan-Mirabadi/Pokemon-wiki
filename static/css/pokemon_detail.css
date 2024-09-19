@@ -10,7 +10,7 @@ body {
 .pokemon-hero {
     display: flex;
     justify-content: center;
-    background-color: #f7f7f7;  /* Light gray background */
+    background-color: #f7f7f7;  
     padding: 20px;
     border-bottom: 2px solid #ccc;
 }
@@ -28,13 +28,13 @@ body {
 .pokemon-info .pokedex-number {
     font-size: 24px;
     color: #666;
-    margin-left: 10px;  /* Adds spacing between name and number */
+    margin-left: 10px; 
 }
-
 .pokemon-sprite {
-    margin-top: 10px;
-    max-width: 300px; /* Increase size of the sprite */
-    height: auto;
+    width: 150px; 
+    height: auto; 
+    display: block;
+    margin: 0 auto;
 }
 
 .details-container {
@@ -52,7 +52,7 @@ body {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns layout */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 20px;
     margin: 20px 0;
 }
@@ -85,7 +85,7 @@ body {
 }
 
 .evolution-item img {
-    max-width: 120px;
+    max-width: 120px; 
     height: auto;
     display: block;
     margin: 0 auto 10px;
